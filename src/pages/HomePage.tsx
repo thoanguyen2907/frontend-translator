@@ -1,3 +1,4 @@
+import { Translator } from '@/types/Translator'
 import Card from '../components/commons/Card'
 import Loading from '../components/commons/Loading'
 import { useAppDispatch, useAppSelector } from '../hooks/hooks'
@@ -21,9 +22,15 @@ export default function HomePage() {
       controller.abort()
     }
   }, [])
+
+    const editTranslator = (id: string, translator: Translator) => {
+    navigate(`/translator/edit/${id}`, { state:  translator})
+  }
+
  if (translators.length === 0 || isLoading) {
     return <Loading />
   }
+
 
   return <div className="p-6 bg-gray-100 min-h-screen">
   {translators.length > 0 ? (
@@ -36,7 +43,7 @@ export default function HomePage() {
          sentenceFirstLang={item.sentenceFirstLang}
          sentenceSecondLang={item.sentenceSecondLang}
          button={{ type: 'button', label: 'Edit' }}
-         onHandler={() => console.log("clicked Edit ")}
+         onHandler={() => editTranslator(item.id, item)}
         />
       ))}
     </div>
