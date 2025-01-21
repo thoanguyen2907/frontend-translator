@@ -6,14 +6,16 @@ import axios, { AxiosResponse } from 'axios'
 
 const initialState: {
   translators: Translator[]
+  totalItems: number
   error?: string | unknown
   isLoading: boolean
 } = {
   translators: [],
+  totalItems: 0,
   isLoading: false
 }
 
-export const fetchAllTranslatorAsync = createAsyncThunk<Translator[], PaginationQuery>(
+export const fetchAllTranslatorAsync = createAsyncThunk<TranslatorResponse, PaginationQuery>(
   'fetchAllTranslatorAsync',
   async ({ limit, offset, keyword, signal }, { rejectWithValue }) => {
     try {
@@ -22,7 +24,7 @@ export const fetchAllTranslatorAsync = createAsyncThunk<Translator[], Pagination
         { signal }
       )
       console.log("result ", result)
-      return result.data?.details?.records
+      return result.data
     } catch (err) {
       const message = err instanceof Error ? err.message : 'error occurred'
       return rejectWithValue(message)
@@ -54,7 +56,8 @@ export const editTranslatorAsync = createAsyncThunk(
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllTranslatorAsync.fulfilled, (state, action) => {
-      state.translators = action.payload
+      state.translators = action.payload.details.records
+      state.totalItems = action.payload.details.totalRecords
       state.isLoading = false
       state.error = undefined
     })
