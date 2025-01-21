@@ -58,16 +58,36 @@ export default function HomePage() {
   }, [keyword, currentPage, itemsPerPage])
 
   const handleCancel = useCallback(() => {
+  }
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setKeyword(value)
+  }
+
+  const handleSearch = () => {
     const controller = new AbortController()
     const { signal } = controller
-    if (keyword !== '') {
+    if (keyword) {
+      dispatch(fetchAllTranslatorAsync({ offset, limit: itemsPerPage, keyword: keyword, signal }))
+    }
+    return () => controller.abort()
+  }
+
+  const handleCancel = () => {
+
+    const controller = new AbortController()
+    const { signal } = controller
+    if (keyword) {
       setKeyword('')
       dispatch(fetchAllTranslatorAsync({ offset: currentPage, limit: itemsPerPage, keyword: '', signal }))
     }
-    return () => controller.abort()
+
   }, [keyword, currentPage, itemsPerPage])
    
   const totalPages = useMemo(() =>  Math.ceil(totalItems / itemsPerPage), [totalItems, itemsPerPage])
+  }
+
 
   if (translators.length === 0 || isLoading) {
     return <Loading />
