@@ -1,14 +1,15 @@
-import { useAppDispatch, useAppSelector } from '../hooks/hooks'
-import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+
+import { useAppDispatch, useAppSelector } from '../hooks/hooks'
+import { editTranslatorAsync } from '../redux/reducers/translatorsReducer'
+
 import { TranslatorEdit } from '@/types/Translator'
 import Input from '../components/commons/Input'
 import Button from '../components/commons/Button'
-import { editTranslatorAsync } from '../redux/reducers/translatorsReducer'
 
 const validationSchema = Yup.object({
   wordFirstLang: Yup.string().required('wordFirstLang is required'),
