@@ -26,7 +26,6 @@ export default function Card({
       <h2 className="text-lg font-bold text-gray-800">{wordFirstLang}</h2>
       <p className="text-gray-600 mt-2">sentenceFirstLang: {sentenceFirstLang}</p>
       <p className="text-gray-600 mt-2">wordSecondLang: {wordSecondLang}</p>
-    
       <p className="text-gray-600 mt-2">sentenceSecondLang:{sentenceSecondLang}</p>
       <div className="mt-4">
         <Button onClick={onHandler} type={button.type} label={button.label} />

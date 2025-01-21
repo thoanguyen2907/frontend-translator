@@ -1,8 +1,9 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios, { AxiosResponse } from 'axios'
+
 import { PaginationQuery } from '@/types/PaginationQuery'
 import { Translator, TranslatorEdit, TranslatorResponse } from '@/types/Translator'
 import { API_URL } from '../../utils/constant'
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios, { AxiosResponse } from 'axios'
 
 const initialState: {
   translators: Translator[]
@@ -23,7 +24,6 @@ export const fetchAllTranslatorAsync = createAsyncThunk<TranslatorResponse, Pagi
         `${API_URL}/translators?offset=${offset}&limit=${limit}&keyword=${keyword}`,
         { signal }
       )
-      console.log("result ", result)
       return result.data
     } catch (err) {
       const message = err instanceof Error ? err.message : 'error occurred'
@@ -33,7 +33,10 @@ export const fetchAllTranslatorAsync = createAsyncThunk<TranslatorResponse, Pagi
 )
 export const editTranslatorAsync = createAsyncThunk(
   'editTranslatorAsync',
-  async ({ editTranslator, id }: { editTranslator: TranslatorEdit; id: string | undefined }, { rejectWithValue }) => {
+  async (
+    { editTranslator, id }: { editTranslator: TranslatorEdit; id: string | undefined },
+    { rejectWithValue }
+  ) => {
     try {
       const result = await axios.patch<Translator>(`${API_URL}/translators/${id}`, editTranslator)
       return result.data
@@ -44,15 +47,15 @@ export const editTranslatorAsync = createAsyncThunk(
   }
 )
 
- const translatorSlice = createSlice({
-   name: 'translators',
-   initialState,
-   reducers: {
-//     clearProduct: (state) => {
-//       state.product = initialState.product
-//       state.error = undefined
-//       state.isLoading = false
-//     }
+const translatorSlice = createSlice({
+  name: 'translators',
+  initialState,
+  reducers: {
+    //     clearProduct: (state) => {
+    //       state.product = initialState.product
+    //       state.error = undefined
+    //       state.isLoading = false
+    //     }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllTranslatorAsync.fulfilled, (state, action) => {
@@ -85,9 +88,8 @@ export const editTranslatorAsync = createAsyncThunk(
     builder.addCase(editTranslatorAsync.rejected, (state) => {
       state.isLoading = false
     })
-   
   }
- })
+})
 
 const translatorReducer = translatorSlice.reducer
 export default translatorReducer
