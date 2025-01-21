@@ -40,27 +40,31 @@ export default function HomePage() {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber)
   }
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setKeyword(value)
   }
+
   const handleSearch = () => {
     const controller = new AbortController()
     const { signal } = controller
-    if (keyword !== '') {
+    if (keyword) {
       dispatch(fetchAllTranslatorAsync({ offset, limit: itemsPerPage, keyword: keyword, signal }))
     }
     return () => controller.abort()
   }
+
   const handleCancel = () => {
     const controller = new AbortController()
     const { signal } = controller
-    if (keyword !== '') {
+    if (keyword) {
       setKeyword('')
       dispatch(fetchAllTranslatorAsync({ offset, limit: itemsPerPage, keyword: '', signal }))
     }
     return () => controller.abort()
   }
+  
   const totalPages = Math.ceil(totalItems / itemsPerPage)
 
   if (translators.length === 0 || isLoading) {
