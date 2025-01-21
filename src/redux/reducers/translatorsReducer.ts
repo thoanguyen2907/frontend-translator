@@ -18,7 +18,7 @@ const initialState: {
 
 export const fetchAllTranslatorAsync = createAsyncThunk<TranslatorResponse, PaginationQuery>(
   'fetchAllTranslatorAsync',
-  async ({ limit, offset, keyword, signal }, { rejectWithValue }) => {
+  async ({ offset, limit, keyword, signal }, { rejectWithValue }) => {
     try {
       const result = await axios.get<any, AxiosResponse<TranslatorResponse>>(
         `${API_URL}/translators?offset=${offset}&limit=${limit}&keyword=${keyword}`,

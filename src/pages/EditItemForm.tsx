@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
@@ -36,10 +37,10 @@ export default function EditItemForm() {
     resolver: yupResolver(validationSchema)
   })
 
-  const onSubmit = (data: TranslatorEdit) => {
+  const onSubmit = useCallback((data: TranslatorEdit) => {
     dispatch(editTranslatorAsync({ editTranslator: data, id }))
     navigate('/')
-  }
+  }, [id])
 
   if (isLoading) {
     return <p>Loading ...</p>
