@@ -51,11 +51,12 @@ const translatorSlice = createSlice({
   name: 'translators',
   initialState,
   reducers: {
-    //     clearProduct: (state) => {
-    //       state.product = initialState.product
-    //       state.error = undefined
-    //       state.isLoading = false
-    //     }
+        clearProduct: (state) => {
+          state.translators = initialState.translators
+          state.totalItems = 0
+          state.error = undefined
+          state.isLoading = false
+        }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllTranslatorAsync.fulfilled, (state, action) => {
@@ -92,4 +93,5 @@ const translatorSlice = createSlice({
 })
 
 const translatorReducer = translatorSlice.reducer
+export const { clearProduct } = translatorSlice.actions
 export default translatorReducer
