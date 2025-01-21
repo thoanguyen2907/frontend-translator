@@ -1,50 +1,21 @@
-# React + TypeScript + Vite
+# React Redux Project with TypeScript, Axios, Jest, and Mock Server
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project demonstrates how to set up a React app using Redux Toolkit with TypeScript, Axios for API requests, and Jest for testing. The app includes features like fetching all data, updating a single item, and optimizing performance with `useCallback` and `useMemo`. It also uses React Router for navigation between the Home and Edit pages.
 
-Currently, two official plugins are available:
+## Features
+- **React**: Frontend UI framework.
+- **Redux Toolkit**: State management using Redux Toolkit for global state management.
+- **TypeScript**: Type safety and enhanced development experience.
+- **Axios**: Fetch data from an API.
+- **Jest**: Testing the app with mock server for API calls.
+- **React Router DOM**: For navigation between pages (Home, Edit).
+- **UI Components**: Reusable components such as `Button`, `Input`, and `Card`.
+- **Optimized Performance**: `useCallback` and `useMemo` to optimize re-renders.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Setup
 
-## Expanding the ESLint configuration
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/thoanguyen2907/frontend-translator/tree/main
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+   and run yarn dev 
