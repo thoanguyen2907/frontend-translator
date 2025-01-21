@@ -14,7 +14,7 @@ import Button from '../components/commons/Button'
 export default function HomePage() {
   const { translators, totalItems, isLoading } = useAppSelector((state) => state.translatorReducer)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(0)
   const [keyword, setKeyword] = useState('')
 
   const itemsPerPage = 9
@@ -32,62 +32,40 @@ export default function HomePage() {
     }
   }, [currentPage])
 
-  const editTranslator = useCallback(
-    (id: string, translator: Translator) => {
+ const editTranslator = useCallback((id: string, translator: Translator) => {
     navigate(`/translator/edit/${id}`, { state: translator })
   }, [])
 
-  const handlePageChange = useCallback(
-    (pageNumber: number) => {
+ const handlePageChange = useCallback((pageNumber: number) => {
     setCurrentPage(pageNumber)
-  }, []) 
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+  }, [])
+  
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setKeyword(value)
   }, [])
 
-  const handleSearch = useCallback(() => {
+ const handleSearch = useCallback(() => {
     const controller = new AbortController()
     const { signal } = controller
-    if (keyword !== '') {
-      dispatch(fetchAllTranslatorAsync({ offset: currentPage, limit: itemsPerPage, keyword: keyword, signal }))
+    if (keyword) {
+      dispatch(fetchAllTranslatorAsync({ offset: currentPage, limit: itemsPerPage, keyword, signal }))
     }
     return () => controller.abort()
   }, [keyword, currentPage, itemsPerPage])
 
   const handleCancel = useCallback(() => {
-  }
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    setKeyword(value)
-  }
-
-  const handleSearch = () => {
-    const controller = new AbortController()
-    const { signal } = controller
-    if (keyword) {
-      dispatch(fetchAllTranslatorAsync({ offset, limit: itemsPerPage, keyword: keyword, signal }))
-    }
-    return () => controller.abort()
-  }
-
-  const handleCancel = () => {
-
     const controller = new AbortController()
     const { signal } = controller
     if (keyword) {
       setKeyword('')
-      dispatch(fetchAllTranslatorAsync({ offset: currentPage, limit: itemsPerPage, keyword: '', signal }))
+      dispatch(fetchAllTranslatorAsync({ offset:currentPage, limit: itemsPerPage, keyword: '', signal }))
     }
-
+    return () => controller.abort()
   }, [keyword, currentPage, itemsPerPage])
-   
-  const totalPages = useMemo(() =>  Math.ceil(totalItems / itemsPerPage), [totalItems, itemsPerPage])
-  }
 
+  
+ const totalPages = useMemo(() => Math.ceil(totalItems / itemsPerPage), [totalItems, itemsPerPage])
 
   if (translators.length === 0 || isLoading) {
     return <Loading />
