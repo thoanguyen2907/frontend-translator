@@ -1,6 +1,5 @@
 # React Redux Project with TypeScript, Axios, Jest, and Mock Server
-
-This project demonstrates how to set up a React app using Redux Toolkit with TypeScript, Axios for API requests, and Jest for testing. The app includes features like fetching all data, updating a single item, and optimizing performance with `useCallback` and `useMemo`. It also uses React Router for navigation between the Home and Edit pages.
+The app includes features like fetching all data, updating a single item, and optimizing performance with `useCallback` and `useMemo`. It also uses React Router for navigation between the Home and Edit pages.
 
 ## Features
 - **React**: Frontend UI framework.
