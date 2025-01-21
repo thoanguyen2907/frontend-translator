@@ -5,6 +5,7 @@ export type Translator = {
   wordSecondLang: string
   sentenceSecondLang: string
 }
+
 export type TranslatorEdit = Omit<Translator, "id">;
 
 export type TranslatorResponse = {
