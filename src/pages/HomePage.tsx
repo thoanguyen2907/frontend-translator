@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Translator } from '@/types/Translator'
@@ -18,7 +18,6 @@ export default function HomePage() {
   const [keyword, setKeyword] = useState('')
 
   const itemsPerPage = 9
-  const offset = (currentPage - 1) * itemsPerPage
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -26,19 +25,39 @@ export default function HomePage() {
   useEffect(() => {
     const controller = new AbortController()
     const { signal } = controller
-    dispatch(fetchAllTranslatorAsync({ offset, limit: itemsPerPage, keyword: keyword, signal }))
+    dispatch(fetchAllTranslatorAsync({ offset: currentPage, limit: itemsPerPage, keyword: keyword, signal }))
 
     return () => {
       controller.abort()
     }
   }, [currentPage])
 
-  const editTranslator = (id: string, translator: Translator) => {
+  const editTranslator = useCallback(
+    (id: string, translator: Translator) => {
     navigate(`/translator/edit/${id}`, { state: translator })
-  }
+  }, [])
 
-  const handlePageChange = (pageNumber: number) => {
+  const handlePageChange = useCallback(
+    (pageNumber: number) => {
     setCurrentPage(pageNumber)
+  }, []) 
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setKeyword(value)
+  }, [])
+
+  const handleSearch = useCallback(() => {
+    const controller = new AbortController()
+    const { signal } = controller
+    if (keyword !== '') {
+      dispatch(fetchAllTranslatorAsync({ offset: currentPage, limit: itemsPerPage, keyword: keyword, signal }))
+    }
+    return () => controller.abort()
+  }, [keyword, currentPage, itemsPerPage])
+
+  const handleCancel = useCallback(() => {
   }
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,16 +75,19 @@ export default function HomePage() {
   }
 
   const handleCancel = () => {
+
     const controller = new AbortController()
     const { signal } = controller
     if (keyword) {
       setKeyword('')
-      dispatch(fetchAllTranslatorAsync({ offset, limit: itemsPerPage, keyword: '', signal }))
+      dispatch(fetchAllTranslatorAsync({ offset: currentPage, limit: itemsPerPage, keyword: '', signal }))
     }
-    return () => controller.abort()
+
+  }, [keyword, currentPage, itemsPerPage])
+   
+  const totalPages = useMemo(() =>  Math.ceil(totalItems / itemsPerPage), [totalItems, itemsPerPage])
   }
-  
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
+
 
   if (translators.length === 0 || isLoading) {
     return <Loading />
